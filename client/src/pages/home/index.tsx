@@ -2,7 +2,8 @@ import * as React from 'react';
 import HeaderComponent from '../../components/HeaderComponent';
 import { Box, Toolbar, Typography } from '@mui/material';
 import CustomDrawer from '../../components/CustomDrawer';
-import CustomizedInputBase from '../../components/CustomizedInputBase';
+import SearchComponent from '../../components/SearchComponent';
+import TableComponent from '../../components/TableComponent';
 
 
 
@@ -17,10 +18,11 @@ export default function MiniDrawer() {
         {/* Box Main */}
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
-          <CustomizedInputBase />
+          <SearchComponent />
+          <TableComponent />
         </Box>
 
       </Box>
-    </div>
+      </div>
   );
 }
