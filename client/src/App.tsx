@@ -8,7 +8,7 @@ import React from 'react'
 import { AuthProvider } from './contexts/AuthContext';
 import { ServerProvider } from './contexts/ServerContext';
 import { SnackbarProvider } from './contexts/SnackbarContext';
-import CustomSnackbar from './components/customSnackbar';
+import CustomSnackbar from './components/CustomSnackbar';
 import Router from './router';
 
 function App() {

@@ -1,6 +1,6 @@
 import { Button, Link, TextField } from "@mui/material";
 import React, { useState } from "react";
-import CustomTextField from "../../components/customTextField";
+import CustomTextField from "../../components/CustomTextField";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useServer } from "../../contexts/ServerContext";
 import { useAuth } from "../../contexts/AuthContext";
