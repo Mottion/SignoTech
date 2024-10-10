@@ -18,7 +18,7 @@ const HeaderComponent: React.FC = () => {
   };
 
   return (
-    <header className="p-2 border-b border-zinc-700 flex flex-row justify-between items-center">
+    <header className="py-2 px-8 border-b border-zinc-700 flex flex-row justify-between items-center absolute z-50 top-0 w-[100vw] bg-zinc-950">
       <img src="/signoTechLogo.png" alt="signoTech" className="max-h-8	" />
       <Tooltip title="Account settings">
         <IconButton
