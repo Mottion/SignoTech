@@ -15,10 +15,17 @@ export class UserService {
   async create(user: createUserDto){
     const response = await this.userRepository.create(user);
     const payload = { id: response.id, name: response.name };
-    return new AccessTokenDto(await this.jwtService.signAsync(payload));
+    const access_token = await this.jwtService.signAsync(payload);
+    return new AccessTokenDto({access_token, name: response.name});
   }
 
   async findByEmail(email: string){
     return await this.userRepository.findByEmail(email);
   }
+
+  public async getMany() {
+    const response = await this.userRepository.getMany();
+    return response;
+  }
+
 }

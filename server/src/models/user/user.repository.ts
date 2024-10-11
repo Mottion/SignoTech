@@ -43,4 +43,9 @@ export class UserRepository {
     return response;
   }
 
+  async getMany(){
+    const response = await this.prisma.user.findMany();
+    return response
+  }
+
 }

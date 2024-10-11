@@ -1,5 +1,5 @@
-// const bcrypt = require('bcryptjs');
-import bcrypt from 'bcryptjs';
+const bcrypt = require('bcryptjs');
+// import bcrypt from 'bcryptjs';
 const saltRounds = 10;
 
 export const encrypt = async (password: string): Promise<string> => {

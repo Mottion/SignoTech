@@ -16,4 +16,11 @@ export class UserController {
     return await this.userService.create(user);
   }
 
+  @Public()
+  @Get("/get-many")
+  async getMany() {
+    console.log("🚀 ~ UserController ~ many:")
+    return await this.userService.getMany();
+  }
+
 }

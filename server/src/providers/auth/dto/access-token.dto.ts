@@ -1,7 +1,9 @@
 export class AccessTokenDto {
   access_token: string;
+  name: string;
 
-  constructor(access_token: string){
-    this.access_token = access_token; 
+  constructor(args: AccessTokenDto){
+    this.access_token = args.access_token; 
+    this.name = args.name; 
   }
 }
