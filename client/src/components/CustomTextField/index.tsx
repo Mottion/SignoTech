@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import React from "react"
 import { CustomTextFieldProps } from "../../@types/components/customTextFieldProps";
 
-const CustomTextField: React.FC<CustomTextFieldProps> = ({value, onChange, label}) => {
+const CustomTextField: React.FC<CustomTextFieldProps> = ({value, onChange, label, extraSX}) => {
   return (
     <TextField 
       sx={{
@@ -14,6 +14,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({value, onChange, label
         '&:hover .MuiFormLabel-root': {color: "#1976d2"},
         '.MuiFormLabel-root.Mui-focused': {color: "#1976d2"},
         '&:hover .MuiInputBase-root .MuiOutlinedInput-notchedOutline': {borderColor: "#1976d2"},
+        ...extraSX
       }}
       fullWidth
       label={label} 

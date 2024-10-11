@@ -3,10 +3,12 @@ import { Box, Drawer, List, Toolbar, Typography } from '@mui/material';
 import DrawerItem from "../DrawerItem";
 import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from "react-router-dom";
 
 const CustomDrawer: React.FC = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const drawerWidth = windowWidth > 700 ? 240 : 55;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -17,22 +19,17 @@ const CustomDrawer: React.FC = () => {
   }, [])
 
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', zIndex: 1, backgroundColor: "#27272a", color: "white", borderRightWidth: "1px", borderColor: "#3f3f46" },
-      }}
-    >
+    <Box sx={
+      { width: drawerWidth, boxSizing: 'border-box', zIndex: 1, backgroundColor: "#27272a", color: "white", borderRightWidth: "1px", borderColor: "#3f3f46", minHeight: "100vh" }
+    }>
       <Toolbar />
       <Box sx={{ overflow: 'hidden' }}>
         <List>
-          <DrawerItem text="Home Page" windowWidth={windowWidth} icon={<HomeIcon sx={{color: "white"}}/>}/>
-          <DrawerItem text="Add Votation" windowWidth={windowWidth} icon={<AddIcon sx={{color: "white"}}/>}/>
+          <DrawerItem onClick={() => navigate("/")} text="Home Page" windowWidth={windowWidth} icon={<HomeIcon sx={{color: "white"}}/>}/>
+          <DrawerItem onClick={() => navigate("/create")} text="Add Votation" windowWidth={windowWidth} icon={<AddIcon sx={{color: "white"}}/>}/>
         </List>
       </Box>
-    </Drawer>
+    </Box>
   )
 }
 

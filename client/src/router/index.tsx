@@ -1,9 +1,12 @@
 import React from "react"
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
-import Signup from "../pages/signup";
-import Login from "../pages/login";
+import Signup from "../pages/Signup";
+import Login from "../pages/Login";
 import { useAuth } from "../contexts/AuthContext";
-import Home from "../pages/home";
+import Home from "../pages/Home";
+import MainLayout from "../layouts/MainLayout";
+import ViewVotation from "../pages/View";
+import CreateSurvey from "../pages/Create";
 
 
 const unAuthenticadedRoutes = createBrowserRouter([
@@ -24,11 +27,25 @@ const unAuthenticadedRoutes = createBrowserRouter([
 const authenticadedRoutes = createBrowserRouter([
   {
     path: "/",
-    element: <Home />
-  },
-  {
-    path: "/a",
-    element: <>Hellow world</>
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/survey/:id",
+        element: <ViewVotation />,
+      },
+      {
+        path: "/create",
+        element: <CreateSurvey />,
+      },
+      {
+        path: "/edit/:id",
+        element: <CreateSurvey />,
+      }
+    ]
   },
   {
     path: "*",
