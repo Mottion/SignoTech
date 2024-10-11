@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: developer123
+      MYSQL_USER: user
+      MYSQL_PASSWORD: developer123
+      MYSQL_DATABASE: signoTech
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mysql:/var/lib/mysql
