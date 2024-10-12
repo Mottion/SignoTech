@@ -3,7 +3,7 @@ import { JoiSchema, JoiSchemaOptions } from "nestjs-joi";
 import * as Joi from 'joi';
 
 @JoiSchemaOptions({allowUnknown: false})
-export class createUserDto implements Prisma.UserCreateInput {
+export class CreateUserDto implements Prisma.UserCreateInput {
   @JoiSchema(Joi.string().required())
   name: string;
   @JoiSchema(Joi.string().required())

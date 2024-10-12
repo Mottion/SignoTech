@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
-import { createUserDto } from "./dto/create-user.dto";
+import { CreateUserDto } from "./dto/create-user.dto";
 import { PrismaService } from "src/prisma.service";
 import { pickSelect } from "src/utils/pick-select";
 
@@ -22,7 +22,7 @@ export class UserRepository {
   }
 
   async create(
-    user: createUserDto,
+    user: CreateUserDto,
     keys: (keyof Prisma.UserSelect)[] = ["id", "name"]
   ){
     const response = await this.prisma.user.create({
@@ -43,7 +43,7 @@ export class UserRepository {
     return response;
   }
 
-  async getMany(){
+  async findMany(){
     const response = await this.prisma.user.findMany();
     return response
   }

@@ -14,8 +14,28 @@ datasource db {
 }
 
 model User {
-  id                 Int               @id @default(autoincrement())
-  name               String
-  email              String            @unique()
-  password           String
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique()
+  password String
+  surveys  Survey[] @relation(name: "UserSurveys")
+  voted    Field[]  @relation(name: "UserVotes")
+}
+
+model Survey {
+  id      Int      @id @default(autoincrement())
+  name    String
+  ownerId Int
+  start   DateTime
+  end     DateTime
+  owner   User     @relation(name: "UserSurveys", fields: [ownerId], references: [id])
+  fields  Field[]  @relation(name: "SurveyFields")
+}
+
+model Field {
+  id       Int    @id @default(autoincrement())
+  text     String
+  surveyId Int
+  survey   Survey @relation(name: "SurveyFields", fields: [surveyId], references: [id], onDelete: Cascade)
+  votes    User[] @relation(name: "UserVotes")
 }

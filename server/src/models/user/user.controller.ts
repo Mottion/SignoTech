@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, Request } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Public } from '../../providers/auth/public.decorator';
-import { createUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -12,15 +12,14 @@ export class UserController {
 
   @Post()
   @Public()
-  async create(@Body() user: createUserDto){
+  async create(@Body() user: CreateUserDto){
     return await this.userService.create(user);
   }
 
   @Public()
   @Get("/get-many")
-  async getMany() {
-    console.log("🚀 ~ UserController ~ many:")
-    return await this.userService.getMany();
+  async findMany() {
+    return await this.userService.findMany();
   }
 
 }
