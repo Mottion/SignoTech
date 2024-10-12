@@ -20,8 +20,10 @@ const Signup: React.FC = () => {
       return;
     }
 
-    const response = await server.userLogin({email, password});
-    login(response);
+    const response = await server.userCreate({email, password, name});
+    if(response){
+      login(response);
+    }
   }
 
   return (
@@ -29,7 +31,7 @@ const Signup: React.FC = () => {
       <form className="min-h-[50vh] bg-zinc-800 w-5/6 max-w-[400px] rounded-lg flex flex-col items-center pt-8 px-5">
         <h2 className="text-white text-3xl font-light tracking-[.25em]">SIGN IN</h2>
         <CustomTextField 
-          value={email} 
+          value={name} 
           label="Name" 
           onChange={(event) => setName(event.target.value)}
         />

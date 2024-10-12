@@ -4,6 +4,7 @@ import { CreateSurveyDto } from './dto/create-survey.dto';
 import { GetManySurveyDto } from './dto/get-many-survey.dto';
 import { Prisma } from '@prisma/client';
 import { UpdateSurveyDto } from './dto/update-survey.dto';
+import { PageListDto } from './dto/page-list.dto';
 
 @Injectable()
 export class SurveyService {
@@ -61,7 +62,6 @@ export class SurveyService {
     const response = await this.surveyRepository.update(surveyId, data);
     return response;
   }
-
   
   async findMany(req: GetManySurveyDto){
     const params = new GetManySurveyDto(req).query
@@ -70,7 +70,8 @@ export class SurveyService {
       throw new BadRequestException("impossible to sort by parameter:" + params.orderBy);
     }
 
-    return await this.surveyRepository.findMany(params);
-    
+    const [surveys, count] = await this.surveyRepository.findMany(params);
+    const response = new PageListDto<typeof surveys>(surveys, count as number, params);
+    return response;
   }
 }

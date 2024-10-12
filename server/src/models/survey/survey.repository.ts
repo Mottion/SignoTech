@@ -38,8 +38,9 @@ export class SurveyRepository {
       query.orderBy = { [params.orderBy]: params.orderType };
     }
     
-    const response = await this.prisma.survey.findMany(query);
-    return response
+    const surveys = await this.prisma.survey.findMany(query);
+    const count = await this.prisma.survey.count({where: query.where});
+    return [surveys, count]
   }
 
   async findById(
