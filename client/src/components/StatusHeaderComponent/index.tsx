@@ -1,7 +1,8 @@
 import * as React from 'react';
 import utils from '../../utils';
+import { SurveyProps } from '../../@types/models/SurveyProps';
 
-const StatusHeaderComponent: React.FC<{value: any}> = ({value}) => {
+const StatusHeaderComponent: React.FC<{value: SurveyProps}> = ({value}) => {
   const status = utils.getStatus(value.start, value.end);
   return (
     <div className='flex flex-wrap gap-2 mt-4 py-3 px-10 w-full text-white font-medium rounded border border-b-0 border-zinc-800'>

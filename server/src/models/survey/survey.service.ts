@@ -5,6 +5,7 @@ import { GetManySurveyDto } from './dto/get-many-survey.dto';
 import { Prisma } from '@prisma/client';
 import { UpdateSurveyDto } from './dto/update-survey.dto';
 import { PageListDto } from './dto/page-list.dto';
+import { CreateVoteDto } from './dto/create-vote.dto';
 
 @Injectable()
 export class SurveyService {
@@ -14,10 +15,14 @@ export class SurveyService {
 
   async create(data: CreateSurveyDto, ownerId: number){
     const {fields, ...survey} = data;
+    const now = new Date().getTime();
+    const start = new Date(data.start).getTime();
+    const end = new Date(data.end).getTime();
+    
 
     if(fields.length < 3) throw new InternalServerErrorException("a poll must have at least 3 options");
-    if(survey.start > survey.end || survey.start == survey.end) throw new InternalServerErrorException("Invalide Date");
-    
+    if(start >= end ) throw new InternalServerErrorException("Invalide Date");
+    if(now >= start ) throw new InternalServerErrorException("Invalide Date");
     const response = await this.surveyRepository.create({...survey, ownerId});
 
     const fieldsCreateData = fields.map((field) => ({...field, surveyId: response.id}))
@@ -25,10 +30,20 @@ export class SurveyService {
     return response;
   }
 
-  async findById(surveyId: number){
+  async findById(surveyId: number, userId: number){
     const survey = await this.surveyRepository.findById(surveyId);
     if(!survey) throw new NotFoundException("Survey not found")
-    return survey;
+    const isOwner = survey.ownerId == userId;
+
+    return {...survey, isOwner};
+  }
+
+  async vote(field: CreateVoteDto, userId: number){
+    const isValid = await this.surveyRepository.checkVotes(userId, field);
+    if(!isValid){throw new InternalServerErrorException("the user has already voted for this poll")}
+
+    const response = await this.surveyRepository.createVote(userId, field);
+    return response;
   }
 
   async update(surveyId: number, data: UpdateSurveyDto){
@@ -73,5 +88,9 @@ export class SurveyService {
     const [surveys, count] = await this.surveyRepository.findMany(params);
     const response = new PageListDto<typeof surveys>(surveys, count as number, params);
     return response;
+  }
+
+  async delete(id: number){
+    return await this.surveyRepository.delete(id);
   }
 }

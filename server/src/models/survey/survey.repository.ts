@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client";
 import { pickSelect } from "src/utils/pick-select";
 import { GetManySurveyDto } from "./dto/get-many-survey.dto";
 import { UpdateSurveyDto } from "./dto/update-survey.dto";
+import { CreateVoteDto } from "./dto/create-vote.dto";
 
 @Injectable()
 export class SurveyRepository {
@@ -13,13 +14,43 @@ export class SurveyRepository {
   ){}
 
   async create(
-    data: Omit<CreateSurveyDto, "fields">,
-    keys: (keyof Prisma.SurveySelect)[] = ["id", "name"]
+    data: Prisma.SurveyCreateManyInput,
   ){
     return await this.prisma.survey.create({
       data: data,
-      select: pickSelect(keys) as Prisma.SurveySelect
     })
+  }
+
+  async delete(id: number){
+    return await this.prisma.survey.delete({where: {id}})
+  }
+
+  async checkVotes(
+    userId: number,
+    field: CreateVoteDto, 
+  ){
+    const {surveyId} = await this.prisma.field.findUnique({
+      where: {id: field.id},
+      select: {surveyId: true}
+    })
+
+    const votes = await this.prisma.field.findMany({
+      where: {surveyId, votes: {some: {id: userId}}}
+    })
+
+    if(!votes.length) return true;
+    else return false;
+  }
+
+  async createVote(
+    userId: number,
+    field: CreateVoteDto, 
+  ){
+    const response = await this.prisma.field.update({
+      where: {id: field.id},
+      data: {votes: {connect: {id: userId}}}
+    });
+    return response
   }
 
   async findMany(

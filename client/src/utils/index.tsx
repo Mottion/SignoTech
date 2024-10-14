@@ -1,5 +1,6 @@
+import dayjs from "dayjs";
 
-const formatDate = (date: string) => {
+const formatDate = (date: any) => {
   const dateObj = new Date(date);
   const formatedDate = `
     ${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')} 
@@ -8,7 +9,7 @@ const formatDate = (date: string) => {
   return formatedDate;
 }
 
-const getStatus = (start: string, end: string) => {
+const getStatus = (start: any, end: any) => {
   const startDate = new Date(start).getTime();
   const endDate = new Date(end).getTime();
   const now = new Date().getTime();

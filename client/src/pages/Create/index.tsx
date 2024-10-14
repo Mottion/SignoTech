@@ -1,25 +1,44 @@
 import React, {useState} from 'react';
 import {  Button, ButtonGroup, Toolbar } from '@mui/material';
-import { useParams } from 'react-router-dom';
 import SurveyComponent from '../../components/SurveyComponent';
 import CustomTextField from '../../components/CustomTextField';
-import { SurveyProps } from '../../@types/models/SurveyProps';
+import { Field, SurveyProps } from '../../@types/models/SurveyProps';
 import DataPickerComponent from '../../components/DataPickerComponent';
-
-const buttons = [
-  <Button sx={{background: "#166534", border: "none", color: "white", '&:hover': {background: "#15803d"}}} key="one">SAVE</Button>,
-  <Button sx={{background: "#991b1b", border: "none", color: "white", '&:hover': {background: "#b91c1c"}}} key="two">CANCEL</Button>,
-];
-
-const value = {id: 1, status: "closed", name: "Votação teste 1", start: "2024-06-11 11:45", end:"2024-06-11 18:00"}
+import dayjs from 'dayjs';
+import { useServer } from '../../contexts/ServerContext';
+import { useNavigate } from 'react-router-dom';
 
 const CreateSurvey: React.FC = () => {
-  const params = useParams();
-  const [data, setData] = useState<SurveyProps>(value);
+  const [survey, setSurvey] = useState<SurveyProps>({
+    name: "", 
+    start: dayjs(),
+    end: dayjs(),
+    fields: [] as SurveyProps["fields"]
+  } as SurveyProps);
+  const server = useServer()
+  const navigate = useNavigate();
 
   const handleDate = (newData: Partial<SurveyProps>) => {
-    setData({...data, ...newData})
+    setSurvey({...survey, ...newData})
   }
+
+  const createSurvey = async () => {
+    const updatedFields = survey.fields?.filter((item) => item !== undefined && item.text !== "") as Field[];
+    const response = await server.createSurvey(survey, updatedFields);
+    if(response){
+      navigate("/")
+    }
+  }
+
+  const cancel = () => {
+    navigate("/")
+  }
+
+
+  const buttons = [
+    <Button onClick={createSurvey} sx={{background: "#166534", border: "none", color: "white", '&:hover': {background: "#15803d"}}} key="one">SAVE</Button>,
+    <Button onClick={cancel} sx={{background: "#991b1b", border: "none", color: "white", '&:hover': {background: "#b91c1c"}}} key="two">CANCEL</Button>,
+  ];
 
   return (
     <>
@@ -28,7 +47,7 @@ const CreateSurvey: React.FC = () => {
         <CustomTextField 
           label='' 
           onChange={(e) => handleDate({name: e.target.value})} 
-          value={data.name.toUpperCase()} 
+          value={survey.name.toUpperCase()} 
           extraSX={{marginTop: 0, minWidth: 200}}
         />
         <ButtonGroup size="large" aria-label="Large button group">
@@ -39,16 +58,16 @@ const CreateSurvey: React.FC = () => {
       <div className='flex flex-wrap gap-2 mt-4 py-3 p-2 w-full text-white font-medium rounded border border-b-0 border-zinc-800 justify-between'>
         <div className="flex items-center gap-2 flex-wrap">
           <p className='text-zinc-500 pt-2 m-auto'>START:</p>
-          <DataPickerComponent />
+          <DataPickerComponent onChange={(date) => handleDate({start: date})} />
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
           <p className='text-zinc-500 pt-2 m-auto'>END:</p>
-          <DataPickerComponent />
+          <DataPickerComponent onChange={(date) => handleDate({end: date})} />
         </div>
 
       </div>
-      <SurveyComponent />
+      <SurveyComponent edit survey={survey} setSurvey={setSurvey} />
       
     </>
   );

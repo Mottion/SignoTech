@@ -1,12 +1,17 @@
+import dayjs from 'dayjs';
+
 export interface SurveyProps {
   id: number;
   name: string;
-  start: string;
-  end: string;
+  start: dayjs.Dayjs | null;
+  end: dayjs.Dayjs | null;
   ownerId: number,
-  fields?: {
-    id?: number,
-    text: string,
-    votes?: number
-  }
+  isOwner?: boolean,
+  fields?: Field[]
+}
+
+export interface Field {
+  id?: number,
+  text: string,
+  votes?: number
 }

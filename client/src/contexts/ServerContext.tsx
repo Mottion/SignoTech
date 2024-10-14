@@ -6,7 +6,7 @@ import api from "../services/axiosConfig";
 import { UserProps } from "../@types/models/UserProps";
 import { AuthProps } from "../@types/models/AuthProps";
 import { useSnackbar } from "./SnackbarContext";
-import { SurveyProps } from "../@types/models/SurveyProps";
+import { Field, SurveyProps } from "../@types/models/SurveyProps";
 import { PaginationDtoProps } from "../@types/publics/PaginationDtoProps";
 
 const ServerContext = createContext<ServerContextProps>({} as ServerContextProps)
@@ -45,11 +45,49 @@ export const ServerProvider: React.FC<ContextProps> = ({children}) => {
     return data;
   })
 
+  const getSurvey = (id: number) => requestWrapper<SurveyProps>(async () => {
+    const {data} = await api.get(`/survey/${id}`, {
+      headers: {Authorization: `Bearer ${auth?.access_token}`}
+    })
+    return data;
+  });
+
+  const createSurvey = (survey: SurveyProps, fields: Field[]) => requestWrapper<SurveyProps>(async () => {
+    const {data} = await api.post(
+      `/survey`, 
+      {...survey, fields},
+      {headers: {Authorization: `Bearer ${auth?.access_token}`}}
+    )
+    return data;
+  });
+
+
+  const vote = (id: number) => requestWrapper<any>(async () => {
+    const {data} = await api.post(
+      `/survey/vote`, 
+      {id},
+      {headers: {Authorization: `Bearer ${auth?.access_token}`}}
+    )
+    return data;
+  });
+  
+  const deleteSurvey = (id: number) => requestWrapper<any>(async () => {
+    const {data} = await api.delete(
+      `/survey/${id}`, 
+      {headers: {Authorization: `Bearer ${auth?.access_token}`}}
+    )
+    return data;
+  });
+  
   return (
     <ServerContext.Provider value={{
       userLogin,
       userCreate,
-      getSurveys
+      getSurveys,
+      getSurvey,
+      createSurvey,
+      vote,
+      deleteSurvey
     }}>
       {children}
     </ServerContext.Provider >
