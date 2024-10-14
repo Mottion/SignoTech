@@ -79,7 +79,7 @@ const TableComponent: React.FC<TableComponentProps> = ({search}) => {
       </div>
       <div className='flex items-center py-3 px-10 w-full text-white font-medium border rounded border-t-0 border-zinc-800 justify-end'>
         <ArrowLeftIcon onClick={() => {setPage(+surveys.page -1)}} sx={{width: 30, height: 30, cursor: "pointer"}} />
-        <p>{surveys.results.length * surveys.page}/{surveys.totalResults}</p>
+        <p>{surveys.results.length + (surveys.take * (surveys.page - 1))}/{surveys.totalResults}</p>
         <ArrowRightIcon onClick={() => {setPage(+surveys.page + 1)}} sx={{width: 30, height: 30, cursor: "pointer"}} />
       </div>
     </>
