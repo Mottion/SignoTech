@@ -48,6 +48,7 @@ export class SurveyService {
 
   async update(surveyId: number, data: UpdateSurveyDto){
     if(!surveyId){throw new InternalServerErrorException("Invalid Param")}
+    data = new UpdateSurveyDto(data);
     
     if(data.fields){
       const {fields} = data;

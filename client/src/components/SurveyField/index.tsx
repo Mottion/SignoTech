@@ -19,13 +19,16 @@ const SurveyFieldComponent: React.FC<SurveyFieldComponentProps> = ({field, editM
           <DeleteIcon sx={{width: 40, height: 40, '&:hover': {color: "red"}}} onClick={onDelete} />
         </div>
       :
-      <FormControlLabel
-        disabled={disabled}
-        sx={{width: "100%", '& .MuiFormControlLabel-label.Mui-disabled': {color: "white"}}} 
-        value={field.id} 
-        control={<Radio sx={{color: "#3f3f46", '&.Mui-disabled': {color: "#3f3f46"}}}/>} 
-        label={field.text} 
-      />
+      <div className='flex gap-2 items-center'>
+        <FormControlLabel
+          disabled={disabled}
+          sx={{width: "100%", '& .MuiFormControlLabel-label.Mui-disabled': {color: "white"}}} 
+          value={field.id} 
+          control={<Radio sx={{color: "#3f3f46", '&.Mui-disabled': {color: "#3f3f46"}}}/>} 
+          label={field.text} 
+        />
+        <p className='text-zinc-500'>{field?._count?.votes}</p>
+      </div>
       }
 
     </div>

@@ -61,6 +61,14 @@ export const ServerProvider: React.FC<ContextProps> = ({children}) => {
     return data;
   });
 
+  const updateSurvey = (survey: SurveyProps, fields: Field[]) => requestWrapper<SurveyProps>(async () => {
+    const {data} = await api.patch(
+      `/survey/${survey.id}`, 
+      {...survey, fields},
+      {headers: {Authorization: `Bearer ${auth?.access_token}`}}
+    )
+    return data;
+  });
 
   const vote = (id: number) => requestWrapper<any>(async () => {
     const {data} = await api.post(
@@ -87,7 +95,8 @@ export const ServerProvider: React.FC<ContextProps> = ({children}) => {
       getSurvey,
       createSurvey,
       vote,
-      deleteSurvey
+      deleteSurvey,
+      updateSurvey
     }}>
       {children}
     </ServerContext.Provider >

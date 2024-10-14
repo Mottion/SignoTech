@@ -76,11 +76,25 @@ export class SurveyRepository {
 
   async findById(
     id: number,
-    keys: (keyof Prisma.SurveySelect)[] = ["id", "name", "end", "name", "ownerId", "start", "fields"]
+    keys: (keyof Prisma.SurveySelect)[] = ["id", "name", "end", "name", "ownerId", "start"]
   ){
     const response = await this.prisma.survey.findUnique({
       where: {id},
-      select: pickSelect(keys) as Prisma.SurveySelect
+      select: {
+        ...pickSelect(keys) as Prisma.SurveySelect,
+        fields: {
+          select: {
+            id: true,
+            surveyId: true,
+            text: true,
+            _count: {
+              select: {
+                votes: true
+              }
+            } 
+          }
+        }
+      }
     });
     return response
   }

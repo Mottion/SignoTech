@@ -44,7 +44,7 @@ const SurveyComponent: React.FC<SurveyComponentProps> = ({edit, survey, setSurve
               editMode={edit} 
               onChange={(e) => {changeText(e, field, index)}}
               onDelete={() => {deleteField(index)}}
-              disabled={status == "IN PROGRESS"}
+              disabled={status !== "IN PROGRESS"}
             />
           ))}
           {edit && <AddSurveyComponent onClick={addField} />}

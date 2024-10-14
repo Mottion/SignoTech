@@ -9,6 +9,7 @@ export interface ServerContextProps{
   getSurveys: (search?: string, page?: number) => Promise<PaginationDtoProps>,
   getSurvey: (id: number) => Promise<SurveyProps>,
   createSurvey: (survey: SurveyProps, fields: Field[]) => Promise<any>,
+  updateSurvey: (survey: SurveyProps, fields: Field[]) => Promise<any>,
   vote: (id: number) => Promise<any>,
   deleteSurvey: (id:number) => Promise<any>,
 }

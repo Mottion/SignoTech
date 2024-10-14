@@ -43,7 +43,7 @@ const authenticadedRoutes = createBrowserRouter([
       },
       {
         path: "/edit/:id",
-        element: <CreateSurvey />,
+        element: <CreateSurvey edit/>,
       }
     ]
   },

@@ -13,5 +13,7 @@ export interface SurveyProps {
 export interface Field {
   id?: number,
   text: string,
-  votes?: number
+  _count?: {
+    votes: number
+  }
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {  Button, ButtonGroup, Toolbar } from '@mui/material';
 import SurveyComponent from '../../components/SurveyComponent';
 import CustomTextField from '../../components/CustomTextField';
@@ -6,9 +6,9 @@ import { Field, SurveyProps } from '../../@types/models/SurveyProps';
 import DataPickerComponent from '../../components/DataPickerComponent';
 import dayjs from 'dayjs';
 import { useServer } from '../../contexts/ServerContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const CreateSurvey: React.FC = () => {
+const CreateSurvey: React.FC<{edit?: boolean}> = ({edit}) => {
   const [survey, setSurvey] = useState<SurveyProps>({
     name: "", 
     start: dayjs(),
@@ -17,6 +17,16 @@ const CreateSurvey: React.FC = () => {
   } as SurveyProps);
   const server = useServer()
   const navigate = useNavigate();
+  const {id} = useParams();
+
+  useEffect(() => {
+    if(edit) getSurvey();
+  },[])
+
+  const getSurvey = async () => {
+    const response = await server.getSurvey(id as any);
+    setSurvey(response)
+  }
 
   const handleDate = (newData: Partial<SurveyProps>) => {
     setSurvey({...survey, ...newData})
@@ -30,13 +40,20 @@ const CreateSurvey: React.FC = () => {
     }
   }
 
+  const handleUpdate = async () => {
+    const updatedFields = survey.fields?.filter((item) => item !== undefined && item.text !== "") as Field[];
+    const response = await server.updateSurvey(survey, updatedFields);
+    if(response){
+      navigate("/")
+    }
+  }
+
   const cancel = () => {
     navigate("/")
   }
 
-
   const buttons = [
-    <Button onClick={createSurvey} sx={{background: "#166534", border: "none", color: "white", '&:hover': {background: "#15803d"}}} key="one">SAVE</Button>,
+    <Button onClick={edit ? handleUpdate : createSurvey} sx={{background: "#166534", border: "none", color: "white", '&:hover': {background: "#15803d"}}} key="one">SAVE</Button>,
     <Button onClick={cancel} sx={{background: "#991b1b", border: "none", color: "white", '&:hover': {background: "#b91c1c"}}} key="two">CANCEL</Button>,
   ];
 

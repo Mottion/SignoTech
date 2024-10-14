@@ -7,8 +7,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useSnackbar } from "../../contexts/SnackbarContext";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>("adrian124a#gmail.com");
-  const [password, setPassword] = useState<string>("Adrian134");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const server = useServer();
   const {login} = useAuth();
   const {handleOpen} = useSnackbar();

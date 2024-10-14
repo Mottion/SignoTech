@@ -57,7 +57,7 @@ const ViewVotation: React.FC = () => {
       <div className='text-white font-medium text-2xl flex w-full justify-between items-center'>
         <h2>{survey.name.toUpperCase()}</h2>
         <ButtonGroup size="large" aria-label="Large button group">
-          {utils.getStatus(survey.start, survey.end) == "CLOSED" && <Button onClick={createVote}>VOTE</Button>}
+          {utils.getStatus(survey.start, survey.end) == "IN PROGRESS" && <Button onClick={createVote}>VOTE</Button>}
           {survey.isOwner && <Button onClick={() => {navigate(`/edit/${survey.id}`)}}>EDIT</Button>}
           {survey.isOwner && <Button onClick={deleteSurvey}>DELETE</Button>}
         </ButtonGroup>
