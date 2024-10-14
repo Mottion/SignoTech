@@ -54,7 +54,7 @@ export class SurveyService {
       const {fields} = data;
       if(fields.length < 3) throw new InternalServerErrorException("a poll must have at least 3 options");
       await this.surveyRepository.removeFields(surveyId);
-      const fieldsCreateData = fields.map((field) => ({...field, surveyId}))
+      const fieldsCreateData = fields.map(({_count, ...field}) => ({...field, surveyId}))
       await this.surveyRepository.createFields(fieldsCreateData);
       delete data.fields
     }

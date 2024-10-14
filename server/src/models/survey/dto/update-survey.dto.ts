@@ -20,11 +20,17 @@ export class UpdateSurveyDto {
     text: Joi.string().required(),
     id: Joi.number().optional(),  
     surveyId: Joi.number().optional(),
+    _count: Joi.object({
+      votes: Joi.number().optional(),
+    }).optional()
   })))
   fields?: {
     text: string
     id?: number
-    surveyId?: number
+    surveyId?: number,
+    _count?: {
+      votes: number
+    }
   }[];
   
   constructor(args: UpdateSurveyDto) {
